@@ -962,12 +962,13 @@ const Main = ({
   };
 
   const addDataSourceDetails = (index,text) => {
-    const newSourceData = [...apiData.data];
-    newSourceData[index].details = text;
-    // console.log("Test")
-  
+    const newSourceData = [...addedDataSources];
+    const newApiData = [...apiData.data]
+    newApiData[apiData.data.findIndex(function(object) {
+      return object.id === newSourceData[index].id;
+  })].details = text
     setApiData({
-      data: newSourceData,
+      data: newApiData,
       history: [...apiData.history]
     });
 
