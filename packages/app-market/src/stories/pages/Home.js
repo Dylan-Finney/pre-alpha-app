@@ -13,6 +13,7 @@ import {
   Radio,
   Divider,
   useTheme,
+  
 } from "@blend-ui/core";
 
 import { Tabs, Tab, TabList, TabPanel, TabPanelList } from "@blend-ui/tabs";
@@ -633,12 +634,12 @@ const Main = ({
         appStatus
         version
         updatedAt
+        compatibility
         languages
         ageRating
         category
         tagline
         developer
-
         description {
           html
         }
@@ -688,7 +689,13 @@ const Main = ({
     title: "",
     description: "",
     icon: "",
-    screenshots: []
+    screenshots: [],
+    developer: "",
+    category: "",
+    languages: "",
+    ageRating: "",
+    lastUpdated: "",
+    compatibility: []
 
   });
 
@@ -917,9 +924,15 @@ for (var i=0; i<50; i++){
     .concat(apiData.data)
     .filter(key => key.isAdded === true);
   console.log("ADDED DATA", addedDataSources);
+  const [searchApps, setSearchApps] = useState("");
+
+  let shownApps = data
+    .filter(app => app.title.toLowerCase().includes(searchApps.toLowerCase()));
+  console.log("ADDED APPS", shownApps);
 
   const [addedDataSources2, setAddedDataSources2] = useState([]);
 
+  
   const [editControled, setEditControled] = useState(false);
 
   ///Prifina user cloud
@@ -1060,50 +1073,93 @@ for (var i=0; i<50; i++){
         fetchApps();
   }, [step]);
 
-  useEffect(() => {
-    console.log(allValues);
-    if (
-      allValues.name !== allValues.newName ||
-      allValues.type !== allValues.newType
-    ) {
-      return console.log("true");
-    } else {
-      return console.log("false");
-    }
-  }, [allValues.newName]);
 
-  useEffect(() => {
-    // console.log("all", dataSource.concat(apiData))
-    let x = true;
-    let allSources = dataSource.concat(apiData.data)
-    if (allSources.length!==apiData.history.length) x=false
-    for (var i = 0; i < allSources.length&&x; ++i) {
-      if (allSources[i].text!==apiData.history[i].text){
-        console.log("Different")
-        x = false
-      } else if (allSources[i].id!==apiData.history[i].id){
-        console.log("Different")
-        x = false
-      } else if (allSources[i].isAdded!==apiData.history[i].isAdded){
-        console.log("Different")
-        x = false
-      } else if (allSources[i].details!==apiData.history[i].details){
-        console.log("Different")
-        x = false
-      }
-    }
 
-    if (x){
-      console.log("SAME")
-    } else {
-      console.log("DIFF")
-    }
-    setDifferenceDataSources(!x)
-  }, [addedDataSources]);
+
+  const searchData = event => {
+    setSearchApps(event.target.value)
+  }
+
+  const pickApp = app => {
+    var title = app.title
+                    var description
+                    var icon 
+                    var screenshots 
+                    var developer
+                    var category
+                    var languages
+                    var ageRating
+                    var compatibility
+                    if (app.description!==null){
+                        description = app.description.html
+
+                    } else {
+                      icon = ""
+                    }
+                    if (app.icon!==null){
+                      icon = app.icon.url
+
+                  } else {
+                    icon = ""
+                  }
+                  if (app.screenshots!==null){
+                    screenshots = app.screenshots
+
+                } else {
+                  screenshots = []
+                }
+                if (app.developer!==null){
+                  developer = app.developer
+
+              } else {
+                developer = ""
+              }
+              if (app.category!==null){
+                category = app.category
+
+            } else {
+              category = ""
+            }
+            if (app.languages!==null){
+              languages = app.languages
+
+          } else {
+            languages = ""
+          }
+          if (app.ageRating!==null){
+            ageRating = app.ageRating
+
+        } else {
+          ageRating = ""
+                    }
+                    if (app.compatibility!==null){
+                      compatibility = app.compatibility
+
+                  } else {
+                    compatibility = []
+                  }
+                  setAllValues({
+                    ...allValues,
+                    title: title,
+                    description: description,
+                    icon: icon,
+                    screenshots: screenshots,
+                    developer: developer,
+                    category: category,
+                    languages: languages,
+                    ageRating: ageRating,
+                    lastUpdated: app.updatedAt,
+                    compatibility: compatibility
+
+                  })
+
+                    setStep(4)
+  }
+
 
   return (
     <React.Fragment>
-      <DevConsoleSidebar items={items} />
+      <DevConsoleSidebar items={items} handleChange={searchData}/>
       <C.NavbarContainer bg="baseWhite">
         <DevConsoleLogo className="appStudio" />
       </C.NavbarContainer>
@@ -1127,7 +1183,7 @@ for (var i=0; i<50; i++){
               <Flex  paddingLeft="44px" flexDirection="column">
                 <Text paddingTop="48px">{i18n.__("profileApps")}</Text>
               <Flex paddingLeft="44px" flexDirection="row">
-                {data.filter(item=>item.appType=="App").map(test=>(
+                {shownApps.filter(item=>item.appType=="App").map(test=>(
                   <>
                   <Flex
                   bg="baseMuted"
@@ -1148,37 +1204,8 @@ for (var i=0; i<50; i++){
                 ):(<></>)}
                  
                   <Text fontSize="md" as="b" onClick={()=>{
-                    var title = test.title
-                    var description
-                    var icon 
-                    var screenshots 
-                    if (test.description!==null){
-                        description = test.description.html
-
-                    } else {
-                      icon = ""
-                    }
-                    if (test.icon!==null){
-                      icon = test.icon.url
-
-                  } else {
-                    icon = ""
-                  }
-                  if (test.screenshots!==null){
-                    screenshots = test.screenshots
-
-                } else {
-                  screenshots = []
-                }
-                  setAllValues({
-                    ...allValues,
-                    title: title,
-                    description: description,
-                    icon: icon,
-                    screenshots: screenshots
-                  })
-
-                    setStep(4)
+                    console.log(test)
+                    pickApp(test)
                   }}>{test.title}</Text>
                   <Text> </Text>
                   <Flex>
@@ -1200,7 +1227,7 @@ for (var i=0; i<50; i++){
               </Flex>
               <Text paddingTop="48px">{i18n.__("widgets")}</Text>
               <Flex  paddingLeft="44px" flexDirection="row">
-                {data.filter(item=>item.appType=="Widget").map(test=>(
+                {shownApps.filter(item=>item.appType=="Widget").map(test=>(
                   <>
                   <Flex
                   bg="baseMuted"
@@ -1215,36 +1242,7 @@ for (var i=0; i<50; i++){
                 ):(<></>)}
                  
                   <Text fontSize="md" as="b" onClick={()=>{
-                    var title = test.title
-                    var description
-                    var icon 
-                    var screenshots 
-                    if (test.description!==null){
-                        description = test.description.html
-
-                    } else {
-                      icon = ""
-                    }
-                    if (test.icon!==null){
-                      icon = test.icon.url
-
-                  } else {
-                    icon = ""
-                  }
-                  if (test.screenshots!==null){
-                    screenshots = test.screenshots
-
-                } else {
-                  screenshots = []
-                }
-                  setAllValues({
-                    ...allValues,
-                    title: title,
-                    description: description,
-                    icon: icon,
-                    screenshots: screenshots
-                  })
-                    setStep(4)
+                    pickApp(test)
                   }}>{test.title}</Text>
                   <Text> </Text>
                   <Flex>
@@ -1280,7 +1278,7 @@ for (var i=0; i<50; i++){
                 <Flex  paddingLeft="44px" flexDirection="column">
                 <Text paddingTop="48px">{i18n.__("profileApps")}</Text>
                 <Flex paddingLeft="44px" flexDirection="row">
-                {data.filter(item=>item.appType=="App").map(test=>(
+                {shownApps.filter(item=>item.appType=="App").map(test=>(
                   <>
                   <Flex
                   bg="baseMuted"
@@ -1301,37 +1299,8 @@ for (var i=0; i<50; i++){
                 ):(<></>)}
                  
                   <Text fontSize="md" as="b" onClick={()=>{
-                    var title = test.title
-                    var description
-                    var icon 
-                    var screenshots 
-                    if (test.description!==null){
-                        description = test.description.html
 
-                    } else {
-                      icon = ""
-                    }
-                    if (test.icon!==null){
-                      icon = test.icon.url
-
-                  } else {
-                    icon = ""
-                  }
-                  if (test.screenshots!==null){
-                    screenshots = test.screenshots
-
-                } else {
-                  screenshots = []
-                }
-                  setAllValues({
-                    ...allValues,
-                    title: title,
-                    description: description,
-                    icon: icon,
-                    screenshots: screenshots
-                  })
-
-                    setStep(4)
+                  pickApp(test)
                   }}>{test.title}</Text>
                   <Text> </Text>
                   <Flex>
@@ -1367,7 +1336,7 @@ for (var i=0; i<50; i++){
             <Flex  paddingLeft="44px" flexDirection="column">
                 <Text paddingTop="48px">{i18n.__("widgets")}</Text>
                 <Flex paddingLeft="44px" flexDirection="row">
-              {data.filter(item=>item.appType=="Widget").map(test=>(
+              {shownApps.filter(item=>item.appType=="Widget").map(test=>(
                <>
                <Flex
                bg="baseMuted"
@@ -1380,38 +1349,10 @@ for (var i=0; i<50; i++){
                  {test.icon!==null ? (
                       <Image src={test.icon.url} shape={"rounded"} width={100}/>
              ):(<></>)}
+             
               
                <Text fontSize="md" as="b" onClick={()=>{
-                    var title = test.title
-                    var description
-                    var icon 
-                    var screenshots 
-                    if (test.description!==null){
-                        description = test.description.html
-
-                    } else {
-                      icon = ""
-                    }
-                    if (test.icon!==null){
-                      icon = test.icon.url
-
-                  } else {
-                    icon = ""
-                  }
-                  if (test.screenshots!==null){
-                    screenshots = test.screenshots
-
-                } else {
-                  screenshots = []
-                }
-                  setAllValues({
-                    ...allValues,
-                    title: title,
-                    description: description,
-                    icon: icon,
-                    screenshots: screenshots
-                  })
-                 setStep(4)
+                 pickApp(test)
                }}>{test.title}</Text>
                <Text> </Text>
                <Flex>
@@ -1436,30 +1377,56 @@ for (var i=0; i<50; i++){
           )}
           {step === 4 && (
             <>
-            <Flex paddingTop="48px" paddingLeft="44px" flexDirection="column">
+            <Flex paddingTop="48px" paddingLeft="44px" flexDirection="row">
+              <Box>
+              <Flex alignItems="center" mr="20px">
+                    <BlendIcon
+                      iconify={mdiArrowLeft}
+                      width="24px"
+                      onClick={() => {
+                        setStep(0);
+                      }}
+                    />
+                    <Text ml="16px">Browse Apps</Text>
+              </Flex>
+              
+              <Flex paddingTop ="16px"  >
                 <Flex
                   bg="baseMuted"
                   flexDirection="column"
                   borderRadius="10px"
                   padding="16px"
+                  marginRight="16px"
+                  width="100%"
                 >
                   
                   <Flex display="flex" flexDirection="row" justifyContent="space-between">
                   <Box>
-
+                  <Flex display="flex" flexDirection="row" justifyContent="space-between">
+                  <Box>
                   <Image src={allValues.icon} shape={"rounded"} width={100}/>
-                  <Text fontSize="lg" as="b">{allValues.title}</Text>
                   </Box>
-                  
-                  
+                  <Box>
+                  <Flex display="flex" flexDirection="column" justifyContent="space-between">
+                  <Text fontSize="lg" as="b">{allValues.title}</Text>
+                  <Text fontSize="lg" >{allValues.developer} • {allValues.category}
+                  </Text>
+                  </Flex>
+
+                  </Box>
+                  </Flex>
+                  </Box>
 
                   <Box>
+                  
                     <Button>{i18n.__("install")}</Button>
                     <Button>{i18n.__("reportBug")}</Button>
                     <Button>{i18n.__("support")}</Button>
                   </Box>
                   </Flex>
                 </Flex>
+                </Flex>
+                <Flex paddingTop ="16px" justifyContent="left">
                 <Flex
                   bg="baseMuted"
                   flexDirection="column"
@@ -1468,21 +1435,26 @@ for (var i=0; i<50; i++){
                 >
                    <Flex display="flex" flexDirection="row" >
                   {allValues.screenshots.map(screenshot => (
-                    <Image src={screenshot.url} shape={"rounded"} width={500}/>
+                    <Flex paddingRight="16px" >
+                      <Image src={screenshot.url} shape={"rounded"} width={500}/>
+                    </Flex>
+                    
                   ))}
                   </Flex>
 
                   
                   
-                  
+                </Flex>
                 </Flex>
                 
                 
+                <Flex paddingTop ="16px" justifyContent="left">
                 <Flex
                   bg="baseMuted"
                   flexDirection="column"
                   borderRadius="10px"
                   padding="16px"
+                  width="100%"
                 >
                   <Flex display="flex" flexDirection="column" justifyContent="left">
                   <Text fontSize="lg" as="b">{i18n.__("description")}</Text>
@@ -1496,6 +1468,61 @@ for (var i=0; i<50; i++){
                   
                   
                 </Flex>
+                </Flex>
+
+               
+              </Box>
+              <Box>
+                <Flex padding="20px">
+                <Flex
+                  bg="baseMuted"
+                  flexDirection="column"
+                  borderRadius="10px"
+                  padding="16px"
+                  width="100%"
+                >
+                  <Flex display="flex" flexDirection="column" justifyContent="left">
+                  <Text fontSize="lg" as="b">{i18n.__("information")}</Text>
+                  <br />
+                  <Flex flexDirection="row" justifyContent="space-between" paddingTop="16px">
+                  <Text>Developer</Text>
+                  <Text>{allValues.developer}</Text>
+                  </Flex>
+                  <Flex flexDirection="row" justifyContent="space-between" paddingTop="16px">
+                  <Text>Last Updated</Text>
+                  <Text>{moment(allValues.lastUpdated).format('DD/MM/YYYY').toString()}</Text>
+                  </Flex>
+                  <Flex flexDirection="row" justifyContent="space-between" paddingTop="16px">
+                  <Text>Category</Text>
+                  <Text>{allValues.category}</Text>
+                  </Flex>
+                  <Flex flexDirection="row" justifyContent="space-between" paddingTop="16px">
+                  <Text>Approximate Size</Text>
+                  <Text>TBD</Text>
+                  </Flex>
+                  <Flex flexDirection="row" justifyContent="space-between" paddingTop="16px">
+                  <Text>Languages Support</Text>
+                  <Text>{allValues.languages}</Text>
+                  </Flex>
+                  <Flex flexDirection="row" justifyContent="space-between" paddingTop="16px">
+                  <Text>Age</Text>
+                  <Text>{allValues.ageRating}</Text>
+                  </Flex>
+                  <Flex flexDirection="row" justifyContent="space-between" paddingTop="16px">
+                  <Text>Compatibility</Text>
+                  <Text>{allValues.compatibility.toString()}</Text>
+                  </Flex>
+                  </Flex>
+                  </Flex>
+                </Flex>
+              
+              </Box>
+            
+
+                  
+                  
+                  
+                
                 </Flex>
             </>
           )}
@@ -1513,7 +1540,7 @@ Main.propTypes = {
 };
 
 const Home = props => {
-  //   const history = useHistory();
+    const history = useHistory();
   //   const {
   //     userAuth,
   //     currentUser,

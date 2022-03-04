@@ -162,6 +162,7 @@ ListItemIconLink.propTypes = {
 export const DevConsoleSidebar = ({
   // theme,
   items,
+  handleChange,
   ...props
 }) => {
   console.log("SIDEBAR ", props);
@@ -171,6 +172,7 @@ export const DevConsoleSidebar = ({
       <Text fontSize="xs" ml="24px" mb="16px">
         Developer Account
       </Text>
+      <Input placeholder="Search app directory" onChange={handleChange}></Input>
       <ListMenu {...props}>
         {items.map(
           ({
@@ -229,6 +231,7 @@ export const DevConsoleSidebar = ({
 
 DevConsoleSidebar.propTypes = {
   items: PropTypes.instanceOf(Array),
+  handleChange: PropTypes.func
 };
 
 export const NavbarContainer = styled(Flex)`
