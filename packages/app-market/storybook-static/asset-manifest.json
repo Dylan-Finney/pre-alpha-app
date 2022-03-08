@@ -5,10 +5,10 @@
     "1.f877af69.iframe.bundle.js.map": "./1.f877af69.iframe.bundle.js.map",
     "2.4d806e1d.iframe.bundle.js": "./2.4d806e1d.iframe.bundle.js",
     "3.f93cceb8.iframe.bundle.js": "./3.f93cceb8.iframe.bundle.js",
-    "main.js": "./main.85ed1d95.iframe.bundle.js",
+    "main.js": "./main.d869fa32.iframe.bundle.js",
     "runtime~main.js": "./runtime~main.17559b4d.iframe.bundle.js",
-    "vendors~main.js": "./vendors~main.78105565.iframe.bundle.js",
-    "vendors~main.js.map": "./vendors~main.78105565.iframe.bundle.js.map",
+    "vendors~main.js": "./vendors~main.32292c64.iframe.bundle.js",
+    "vendors~main.js.map": "./vendors~main.32292c64.iframe.bundle.js.map",
     "7.ebbded10.iframe.bundle.js": "./7.ebbded10.iframe.bundle.js",
     "8.c8a5478c.iframe.bundle.js": "./8.c8a5478c.iframe.bundle.js",
     "8.c8a5478c.iframe.bundle.js.map": "./8.c8a5478c.iframe.bundle.js.map",
@@ -20,11 +20,11 @@
     "static/media/background.b3d5f165.png": "./static/media/background.b3d5f165.png",
     "static/media/cardPrifinaLogo.f57854a7.svg": "./static/media/cardPrifinaLogo.f57854a7.svg",
     "static/media/dashboard-banner.bd5360e7.png": "./static/media/dashboard-banner.bd5360e7.png",
-    "vendors~main.78105565.iframe.bundle.js.LICENSE.txt": "./vendors~main.78105565.iframe.bundle.js.LICENSE.txt"
+    "vendors~main.32292c64.iframe.bundle.js.LICENSE.txt": "./vendors~main.32292c64.iframe.bundle.js.LICENSE.txt"
   },
   "entrypoints": [
     "runtime~main.17559b4d.iframe.bundle.js",
-    "vendors~main.78105565.iframe.bundle.js",
-    "main.85ed1d95.iframe.bundle.js"
+    "vendors~main.32292c64.iframe.bundle.js",
+    "main.d869fa32.iframe.bundle.js"
   ]
 }
