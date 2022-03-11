@@ -67,13 +67,13 @@ const getAppsQuery = {
       appStatus
       version
       updatedAt
-      compatibility
+      deviceSupport
       languages
-      ageRating
+      age
       category
-      tagline
-      developer
-      description
+      shortDescription
+      publisher
+      longDescription
       keyFeatures
       userHeld
       userGenerated
@@ -451,8 +451,8 @@ export const listDataSources = `query listDataSources($filter:TableDataSourceFil
           var developer =""
           var category = ""
           var languages =""
-          var ageRating =""
-          var compatibility=""
+          var age =""
+          var deviceSupport=""
           if (app.description!==null){
               description = app.description
 
@@ -493,33 +493,33 @@ export const listDataSources = `query listDataSources($filter:TableDataSourceFil
         } else {
           languages = ""
         }
-        if (app.ageRating!==null){
-          ageRating = app.ageRating
+        if (app.age!==null){
+          age = app.age
 
         } else {
-        ageRating = ""
+          age = ""
                   }
-          if (app.compatibility!==null){
-              compatibility = app.compatibility.join(", "); 
+          if (app.deviceSupport!==null){
+            deviceSupport = app.deviceSupport.join(", "); 
         } else {
-          compatibility = []
+          deviceSupport = []
         }
           
      availableWidgets[app.id] = {
             title: app.title,
             installed: false,
             settings: defaultSettings,
-            publisher: app.developer,
+            publisher: app.publisher,
             icon: icon,
             bannerImage: icon,
             description: "This is a description",
-            shortDescription: app.tagline,
-            longDescription: app.description,
+            shortDescription: app.shortDescription,
+            longDescription: app.longDescription,
             dataTypes: app.datatypes.join(", "),
             category: category,
-            deviceSupport: compatibility,
+            deviceSupport: deviceSupport,
             languages: languages,
-            age: ageRating,
+            age: age,
             screenshots: screenshots,
             keyFeatures: app.keyFeatures,
             userHeld: app.userHeld,
