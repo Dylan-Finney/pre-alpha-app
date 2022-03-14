@@ -101,7 +101,7 @@ function Table({ columns, data }) {
     {
       columns,
       data,
-      initialState: { pageIndex: 0, pageSize: 8, hiddenColumns: ["id", "dataSource", "details"] },
+      initialState: { pageIndex: 0, pageSize: 8, hiddenColumns: ["id", "dataSource2", "details"] },
     },
     usePagination,
   );

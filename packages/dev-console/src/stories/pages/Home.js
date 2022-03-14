@@ -633,7 +633,7 @@ const Main = ({
         appStatus
         version
         updatedAt
-        dataSource {
+        dataSource2 {
           __typename
           ... on Api {
             id
@@ -738,7 +738,7 @@ const Main = ({
               setSavedResources(false)
               console.log("test - ", props.row.values.version.toString())
               let x = []
-              props.row.values.dataSource.map(dataSource => {
+              props.row.values.dataSource2.map(dataSource => {
                 if (dataSource.__typename==="Api")
                 x.push({"text": dataSource.url, "isAdded":dataSource.added, "id": dataSource.id, "details": dataSource.desc})
               })
@@ -807,8 +807,8 @@ const Main = ({
       },
     },
     {
-      Header: "dataSource",
-      accessor: "dataSource"
+      Header: "dataSource2",
+      accessor: "dataSource2"
     },
     
     // {
