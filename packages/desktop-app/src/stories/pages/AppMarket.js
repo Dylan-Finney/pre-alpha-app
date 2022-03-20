@@ -78,13 +78,9 @@ const getAppsQuery = {
       userHeld
       userGenerated
       datatypes
-      icon {
-        url
-      }
-      screenshots {
-        url
-      }
-      dataSource {
+      icon
+      screenshots
+      dataSource2 {
         __typename
         ... on Api {
           id
@@ -460,7 +456,7 @@ export const listDataSources = `query listDataSources($filter:TableDataSourceFil
             description = ""
           }
           if (app.icon!==null){
-            icon = app.icon.url
+            icon = app.icon
 
                 } else {
                   icon = ""
@@ -469,7 +465,7 @@ export const listDataSources = `query listDataSources($filter:TableDataSourceFil
                   let x = 0
                   app.screenshots.forEach(element => {
                     x++
-                    screenshots[x] = element.url
+                    screenshots[x] = element
                   });
 
               } else {
@@ -524,10 +520,10 @@ export const listDataSources = `query listDataSources($filter:TableDataSourceFil
             keyFeatures: app.keyFeatures,
             userHeld: app.userHeld,
             userGenerated: app.userGenerated,
-            public: app.dataSource.filter(dataSource=>dataSource.__typename==="Api"),
+            public: app.dataSource2.filter(dataSource=>dataSource.__typename==="Api"),
             id: "aaaa",
             dataSources: [{title: "test", icon: "https://media.graphcms.com/POfD9TPTW6a3knaWgXDw", id: "1", sourceType: 1}],
-            dataConnectors: [app.dataSource.filter(dataSource=>dataSource.__typename==="userCloud")],
+            dataConnectors: [app.dataSource2.filter(dataSource=>dataSource.__typename==="userCloud")],
           };
           
 
